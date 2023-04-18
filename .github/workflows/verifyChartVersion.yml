@@ -1,10 +1,9 @@
 name: Verify Chart Version
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "development" branch
-  push:
-    branches: [ "development" ]
+  # Triggers the workflow on pull request events but only for the "development" branch
   pull_request:
+    types: [closed]
     branches: [ "development" ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -16,23 +15,47 @@ jobs:
   verifyChartVersion:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: development
       - name: Verify Chart Version
         run: |
-          # Get the current version number from Chart.yaml
-          current_version=$(grep '^version:' charts/volumez-csi/Chart.yaml | awk '{print $2}')
-          
+        
           # Get the base commit SHA for the pull request
-          base_commit=$(jq .pull_request.base.sha -r "$GITHUB_EVENT_PATH")
+          # base_commit=$(jq .pull_request.base.sha -r "$GITHUB_EVENT_PATH")
           
           # Get the version number from Chart.yaml in the base commit
           git fetch &> /dev/null
+          base_commit=$(git rev-parse HEAD)
           previous_version=$(git show $base_commit:charts/volumez-csi/Chart.yaml | grep '^version:' | awk '{print $2}')
+          echo "previous version:" $previous_version
           
-          # Compare the current and previous versions
-          function ver { printf "%03d%03d%03d%03d" $(echo "$1" | tr '.' ' '); }
-          if [ $(ver $current_version) -le $(ver $previous_version) ]; then
-            echo "Error: Chart version not incremented. Expected a version higher than $previous_version but got $current_version"
-            exit 1
+          if [[ $previous_version == *"rc"* ]]; then
+            # Increment the RC version
+            rc_version=$(echo $previous_version | awk -F '-rc.' '{print $2}')
+            new_rc_version=$(expr $rc_version + 1)
+            new_version=$(echo $previous_version | sed "s/rc.$rc_version/rc.$new_rc_version/")
+            echo "new version1:" $new_version
+          else
+            # Increment the minor version
+            minor_version=$(echo $previous_version | awk -F '.' '{print $2}')
+            new_minor_version=$(expr $minor_version + 1)
+            new_version=$(echo $previous_version | sed "s/.$minor_version./.$new_minor_version./")
+            new_version="$new_version-rc.1"
           fi
+          echo "new version3:" $new_version
+          sed -i "0,/version:/s/version:.*/version: $new_version/" charts/volumez-csi/Chart.yaml
+      
+      - name: Commit changes
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git commit -a -m "Update file in pull request"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: development
