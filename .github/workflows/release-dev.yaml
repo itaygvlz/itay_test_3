@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - development
+  workflow_run:
+    workflows: ["Verify Chart Version"]
+    # branches: ["main"]
 
 jobs:
   release:
