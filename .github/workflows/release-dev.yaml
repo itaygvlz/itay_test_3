@@ -1,3 +1,4 @@
+
 name: Release Charts Dev
 
 on:
@@ -5,9 +6,6 @@ on:
     types: [closed]
     branches:
       - development
-#   workflow_run:
-#     workflows: ["Verify Chart Version"]
-#     types: [completed]
 
 jobs:
   updateChartVersion:
@@ -38,14 +36,14 @@ jobs:
             new_version=$(echo $previous_version | sed "s/.$minor_version./.$new_minor_version./")
             new_version="$new_version-rc.1"
           fi
-          echo "new version:" $new_version
+          echo "::set-output name=new_version::$new_version"
           sed -i "0,/version:/s/version:.*/version: $new_version/" charts/volumez-csi/Chart.yaml
       
       - name: Commit changes
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
-          git commit -a -m "Update chart version to $new_version"
+          git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.my_var }}"
       
       - name: Push changes
         uses: ad-m/github-push-action@master
@@ -79,5 +77,3 @@ jobs:
           mark_as_latest: false 
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          
-          
