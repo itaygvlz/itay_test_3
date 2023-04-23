@@ -32,9 +32,11 @@ jobs:
             new_version=$(echo $previous_version | sed "s/rc.$rc_version/rc.$new_rc_version/")
           else
             # Increment the minor version
+            major_version=$(echo $previous_version | awk -F '.' '{print $1}')
             minor_version=$(echo $previous_version | awk -F '.' '{print $2}')
+            patch_version=$(echo $previous_version | awk -F '.' '{print $3}')
             new_minor_version=$(expr $minor_version + 1)
-            new_version=$(echo $previous_version | sed "s/.$minor_version./.$new_minor_version./")
+            new_version="$major_version.$new_minor_version.0"
             new_version="$new_version-rc.1"
           fi
           echo "NEW_CHART_VERSION=$new_version" >> $GITHUB_OUTPUT
