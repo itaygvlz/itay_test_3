@@ -10,18 +10,18 @@ on:
 jobs:
   updateChartVersion:
     runs-on: ubuntu-latest
-#     if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          ref: development
       - name: Update Chart Version
         id: update_chart_version
         run: |
           
           # Get the version number from Chart.yaml in the base commit
           git fetch &> /dev/null
-          base_commit=$(git rev-parse origin/development)
+          base_commit=$(git rev-parse HEAD)
           previous_version=$(git show $base_commit:charts/volumez-csi/Chart.yaml | grep '^version:' | awk '{print $2}')
           echo "previous version:" $previous_version
           
@@ -52,7 +52,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          branch: development
           
   release:
     runs-on: ubuntu-latest
