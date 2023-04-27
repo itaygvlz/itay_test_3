@@ -10,11 +10,11 @@ on:
 jobs:
   updateChartVersion:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+#     if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: development
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Update Chart Version
         id: update_chart_version
         run: |
@@ -52,7 +52,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: development
+          branch: ${{ github.event.pull_request.head.ref }}
           
   release:
     runs-on: ubuntu-latest
