@@ -44,7 +44,7 @@ jobs:
       
       - name: Commit changes
         env:
-          ACCESS_TOKEN: ${{ secrets.PAT }}
+          PAT: ${{ secrets.PAT }}
         run: |
           git config user.email "info@volumez.com"
           git config user.name "VolumezTech"
