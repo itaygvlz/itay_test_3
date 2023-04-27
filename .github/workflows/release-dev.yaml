@@ -51,8 +51,10 @@ jobs:
       
       - name: Push changes
         uses: ad-m/github-push-action@master
+        env:
+          PAT: ${{ secrets.PAT }}
         with:
-           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # github_token: ${{ secrets.GITHUB_TOKEN }}
            branch: development
            force_with_lease: true 
           
