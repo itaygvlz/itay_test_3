@@ -48,6 +48,7 @@ jobs:
         run: |
           git config user.email "info@volumez.com"
           git config user.name "VolumezTech"
+          git config --list --show-origin | grep user
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
           git push --force-with-lease 
       
