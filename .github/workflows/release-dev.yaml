@@ -52,7 +52,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         env:
-          PAT: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
            branch: development
            force: true 
