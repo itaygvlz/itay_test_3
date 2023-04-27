@@ -10,11 +10,11 @@ on:
 jobs:
   updateChartVersion:
     runs-on: ubuntu-latest
-#     if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: development
       - name: Update Chart Version
         id: update_chart_version
         run: |
@@ -49,10 +49,12 @@ jobs:
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
       
       - name: Push changes
+        env:
+          PAT: ${{ secrets.PAT }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.event.pull_request.head.ref }}
+          branch: development
           
   release:
     runs-on: ubuntu-latest
