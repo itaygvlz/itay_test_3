@@ -55,6 +55,7 @@ jobs:
           PAT: ${{ secrets.PAT }}
         with:
            branch: development
+           force: true 
           
   release:
     runs-on: ubuntu-latest
