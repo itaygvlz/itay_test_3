@@ -43,18 +43,19 @@ jobs:
           sed -i "0,/version:/s/version:.*/version: $new_version/" charts/volumez-csi/Chart.yaml
       
       - name: Commit changes
+        env:
+          PAT: ${{ secrets.PAT }}
         run: |
           git config user.email "info@volumez.com"
           git config user.name "VolumezTech"
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
+          git push --force-with-lease 
       
-      - name: Push changes
-        env:
-          PAT: ${{ secrets.PAT }}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: development
+ #     - name: Push changes
+ #       uses: ad-m/github-push-action@master
+ #       with:
+ #         github_token: ${{ secrets.GITHUB_TOKEN }}
+ #         branch: development
           
   release:
     runs-on: ubuntu-latest
