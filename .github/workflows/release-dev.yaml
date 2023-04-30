@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-         # persist-credentials: false 
           ref: development
           
       - name: Update Chart Version
@@ -53,7 +52,6 @@ jobs:
           git config user.name "VolumezTech"
           git config --list --show-origin | grep user
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
-         # git push --force
       
       - name: Push changes
         uses: CasperWA/push-protected@v2
@@ -61,7 +59,7 @@ jobs:
           token: ${{ secrets.PAT }}
           branch: development
           unprotect_reviews: true 
-          force: true 
+          #force: true 
           
    #      uses: ad-m/github-push-action@master
    #     env:
