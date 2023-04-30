@@ -14,7 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          persist-credentials: false 
           ref: development
+          
       - name: Update Chart Version
         id: update_chart_version
         run: |
@@ -44,7 +46,7 @@ jobs:
       
       - name: Commit changes
         env:
-            PAT: ${{ secrets.ACTIONSPAT }}
+            PAT: ${{ secrets.PAT }}
         run: |
           git config user.email "info@volumez.com"
           git config user.name "VolumezTech"
@@ -53,11 +55,10 @@ jobs:
          # git push --force
       
       - name: Push changes
-        uses: colmose/push-bot@v1.0.0
+        uses: CasperWA/push-protected@v2
         with:
-          token: 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
-          branch_name: 'development'
-          bot_name: 'admin-machine'
+          token: ${{ secrets.PAT }}
+          branch: development
           
    #      uses: ad-m/github-push-action@master
    #     env:
