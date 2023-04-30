@@ -3,6 +3,23 @@ entries:
   volumez-csi:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-04-30T09:37:44.92455974Z"
+    dependencies:
+    - alias: certmanager
+      condition: cert-manager.enabled
+      name: cert-manager
+      repository: https://charts.jetstack.io
+      version: 1.11.0
+    description: A Helm chart for Volumez-CSI container
+    digest: 90fd49080fed22537c4020f8f1e299c65f6374af8182b50bc4b17cadd986d495
+    icon: https://volumez.com/wp-content/uploads/2022/01/Group-2273.svg
+    name: volumez-csi
+    type: application
+    urls:
+    - https://github.com/VolumezTech/itay_test_3/releases/download/volumez-csi-1.35.0-rc.1/volumez-csi-1.35.0-rc.1.tgz
+    version: 1.35.0-rc.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-04-30T09:34:42.416661143Z"
     dependencies:
     - alias: certmanager
@@ -1012,4 +1029,4 @@ entries:
     urls:
     - https://github.com/VolumezTech/helm-csi/releases/download/volumez-csi-0.1.1/volumez-csi-0.1.1.tgz
     version: 0.1.1
-generated: "2023-04-30T09:34:42.417003447Z"
+generated: "2023-04-30T09:37:44.92500144Z"
