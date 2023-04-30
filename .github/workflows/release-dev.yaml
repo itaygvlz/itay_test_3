@@ -52,7 +52,13 @@ jobs:
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
           git push --force
       
-   #     - name: Push changes
+      - name: Push changes
+        uses: colmose/push-bot@v1.0.0
+        with:
+          token: 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
+          branch_name: 'development'
+          bot_name: 'admin-machine'
+          
    #      uses: ad-m/github-push-action@master
    #     env:
    #       ACTIONSPAT: ${{ secrets.ACTIONSPAT }}
