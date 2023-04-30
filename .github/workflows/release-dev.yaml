@@ -45,8 +45,8 @@ jobs:
           sed -i "0,/version:/s/version:.*/version: $new_version/" charts/volumez-csi/Chart.yaml
       
       - name: Commit changes
-        env:
-            PAT: ${{ secrets.PAT }}
+       # env:
+       #     PAT: ${{ secrets.PAT }}
         run: |
           git config user.email "info@volumez.com"
           git config user.name "VolumezTech"
