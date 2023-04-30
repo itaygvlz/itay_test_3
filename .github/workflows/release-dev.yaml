@@ -59,6 +59,7 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: development
+          unprotect_reviews: true 
           
    #      uses: ad-m/github-push-action@master
    #     env:
