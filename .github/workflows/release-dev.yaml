@@ -58,17 +58,9 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: development
-          unprotect_reviews: true 
-          #force: true 
+         # unprotect_reviews: true 
           
-   #      uses: ad-m/github-push-action@master
-   #     env:
-   #       ACTIONSPAT: ${{ secrets.ACTIONSPAT }}
-   #     with:
-   #       # github_token: ${{ secrets.GITHUB_TOKEN }}
-   #        branch: development
-   #        force_with_lease: true 
-          
+
   release:
     runs-on: ubuntu-latest
     needs: updateChartVersion
