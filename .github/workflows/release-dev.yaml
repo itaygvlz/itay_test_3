@@ -50,7 +50,7 @@ jobs:
           git config user.name "VolumezTech"
           git config --list --show-origin | grep user
           git commit -a -m "Update chart version to ${{ steps.update_chart_version.outputs.NEW_CHART_VERSION }}"
-          git push --force
+         # git push --force
       
       - name: Push changes
         uses: colmose/push-bot@v1.0.0
