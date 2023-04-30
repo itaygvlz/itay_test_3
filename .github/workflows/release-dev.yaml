@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          persist-credentials: false 
+         # persist-credentials: false 
           ref: development
           
       - name: Update Chart Version
@@ -41,6 +41,7 @@ jobs:
             new_version="$major_version.$new_minor_version.0"
             new_version="$new_version-rc.1"
           fi
+          echo "new version:" $new_version
           echo "NEW_CHART_VERSION=$new_version" >> $GITHUB_OUTPUT
           sed -i "0,/version:/s/version:.*/version: $new_version/" charts/volumez-csi/Chart.yaml
       
